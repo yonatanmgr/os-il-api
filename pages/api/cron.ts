@@ -33,13 +33,17 @@ export default function handler(req, res) {
       // Connect the client to the server (optional starting in v4.7)
       await client.connect();
       const collection = await client.db("osil").collection(col);
-      collection.updateOne({ _id: new ObjectId(id) }, { $set: { data: data } }, { upsert: true });
+      collection.updateOne(
+        { _id: new ObjectId(id) },
+        { $set: { data: data } },
+        { upsert: true }
+      );
     } finally {
       // Ensures that the client will close when you finish/error
       await setTimeout(() => {
         client.close();
       }, 1500);
-    } 
+    }
   };
 
   axios.get(readmeUrl).then((result) => {
@@ -60,11 +64,13 @@ export default function handler(req, res) {
       allProjects.push(lang.match(findListItemRegex));
     });
 
-    allComps = allComps.map((company) => {
-      if (company[2].split("/").includes("github.com")){
-        return { name: company[2].replace("https://github.com/", "") };
-      }
-    }).filter((comp) => comp != undefined);;
+    allComps = allComps
+      .map((company) => {
+        if (company[2].split("/").includes("github.com")) {
+          return { name: company[2].replace("https://github.com/", "") };
+        }
+      })
+      .filter((comp) => comp != undefined);
 
     allProjects = allProjects
       .flat()
@@ -95,6 +101,7 @@ export default function handler(req, res) {
         let gqlBody = {
           query: `query ($repoOwner: String!, $repoName: String!) {
            repository(owner: $repoOwner, name: $repoName) {
+             nameWithOwner,
              languages(first: 3, orderBy: {field: SIZE, direction: DESC}) {
                edges {
                  size
