@@ -23,7 +23,11 @@ export default async function handler(req, res) {
     });
 
 
-    res.status(200).json(compsResult.data.find(obj => obj.organization.login == company));
+    res.status(200).json(compsResult.data.find(obj => {
+      if (obj.organization) {        
+        return obj.organization.login == company
+      }
+    }));
   } finally {
     await setTimeout(() => {
       client.close();
