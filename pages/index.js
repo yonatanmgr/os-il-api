@@ -45,10 +45,9 @@ export default function Home() {
     })
       .then((res) => res.text())
       .then((text) => {
-        const t = JSON.parse(text)
-        setData(t.repository.upCase.text)
+        setData(JSON.parse(text))
       });
   }, []);
 
-  return <>{data}</>
+  return <>{data.repository.upCase.text}</>
 }
