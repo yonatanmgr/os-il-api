@@ -7,9 +7,9 @@ export default function handler(
   response: NextApiResponse
 ) {
 
-  const req = encodeURIComponent(request.query.repo as string);
-  const repoOwner = req.split("/")[0]
-  const repoName = req.split("/")[1]
+  const req = request.query.repo;
+  const repoOwner = req[0];
+  const repoName = req[1];
 
   let headersList = {
     Accept: "*/*",
