@@ -33,7 +33,7 @@ export default function handler(
        }
      }
    }`,
-    variables: { repoOwner: request.query.repo.split(".")[0], repoName: request.query.repo.split(".")[1] },
+    variables: { repoOwner: (request.query.repo as string).split(".")[0], repoName: (request.query.repo as string).split(".")[1] },
   };
 
   let bodyContent = JSON.stringify(gqlBody);
