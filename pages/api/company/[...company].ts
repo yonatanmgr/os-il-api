@@ -10,6 +10,8 @@ export default async function handler(req, res) {
     serverApi: ServerApiVersion.v1,
   });
 
+  const { company } = req.query
+
   try {
     await client.connect();
     const db = await client.db("osil");
@@ -21,7 +23,7 @@ export default async function handler(req, res) {
     });
 
 
-    res.status(200).json(compsResult.data.find(obj => obj.organization.login == req));
+    res.status(200).json(compsResult.data.find(obj => obj.organization.login == company));
   } finally {
     await setTimeout(() => {
       client.close();
