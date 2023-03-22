@@ -7,7 +7,8 @@ export default function handler(
   response: NextApiResponse
 ) {
 
-  const req = request.query.repo;
+  const req = request.query.repoDetails;
+  
   const repoOwner = req[0];
   const repoName = req[1];
 
