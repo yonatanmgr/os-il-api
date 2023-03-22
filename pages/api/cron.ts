@@ -39,7 +39,7 @@ export default function handler(req, res) {
       await setTimeout(() => {
         client.close();
       }, 1500);
-    }
+    } 
   };
 
   axios.get(readmeUrl).then((result) => {
