@@ -1,13 +1,13 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 
 
 export default function Home() {
   const [data, setData] = useState("")
-  
-  useEffect(() => {    
+
+  useEffect(() => {
     let headersList = {
       "Accept": "*/*",
-      "Authorization": "bearer "+process.env.github_read_token,
+      "Authorization": "bearer " + process.env.github_read_token,
       "Content-Type": "application/json",
     };
 
@@ -43,11 +43,13 @@ export default function Home() {
       body: bodyContent,
       headers: headersList,
     })
-      .then((res) => res.json())
-      .then((text) => setData(text.data.repository.upCase.text));
+      .then((res) => res.text())
+      .then((text) => {
+        t = JSON.parse(text)
+        console.log(t);
+        setData(t)
+      });
   }, []);
 
-  return (
-    <>{data}</>
-  )
+  return <>{data}</>
 }
