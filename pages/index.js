@@ -45,7 +45,7 @@ export default function Home() {
     })
       .then((res) => res.text())
       .then((text) => {
-        t = JSON.parse(text)
+        const t = JSON.parse(text)
         console.log(t);
         setData(t)
       });
