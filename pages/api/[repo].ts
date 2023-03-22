@@ -6,6 +6,11 @@ export default function handler(
   request: NextApiRequest,
   response: NextApiResponse
 ) {
+
+  const req = encodeURIComponent(request.query.repo as string);
+  const repoOwner = req.split("/")[0]
+  const repoName = req.split("/")[1]
+
   let headersList = {
     Accept: "*/*",
     Authorization: "bearer " + process.env.github_read_token,
@@ -33,7 +38,7 @@ export default function handler(
        }
      }
    }`,
-    variables: { repoOwner: (request.query.repo as string).split(".")[0], repoName: (request.query.repo as string).split(".")[1] },
+    variables: { repoOwner: repoOwner, repoName: repoName },
   };
 
   let bodyContent = JSON.stringify(gqlBody);
