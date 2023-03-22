@@ -144,6 +144,7 @@ export default function handler(req, res) {
         let gqlBody = {
           query: `query ($login: String!) {
             organization(login: $login) {
+              login,
               repositories(
                 first: 100
                 isLocked: false
