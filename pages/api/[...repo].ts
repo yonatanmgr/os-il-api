@@ -13,7 +13,7 @@ export default function handler(
 
   let headersList = {
     Accept: "*/*",
-    Authorization: "bearer " + process.env.github_read_token,
+    Authorization: "bearer " + process.env.github_read_only,
     "Content-Type": "application/json",
   };
 
