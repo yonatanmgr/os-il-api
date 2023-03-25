@@ -100,26 +100,33 @@ export default function handler(req, res) {
       allProjects.forEach((project) => {
         let gqlBody = {
           query: `query ($repoOwner: String!, $repoName: String!) {
-           repository(owner: $repoOwner, name: $repoName) {
-             nameWithOwner,
-             languages(first: 3, orderBy: {field: SIZE, direction: DESC}) {
-               edges {
-                 size
-                 node {
-                   name
-                 }
-               }
-             },
-             openGraphImageUrl,
-             shortDescriptionHTML,
-             pushedAt,
-             upCase: object(expression: "master:README.md") {
-               ... on Blob {
-                 text
-               }
-             }
-           }
-         }`,
+            repository(owner: $repoOwner, name: $repoName) {
+              openIssues: issues(states:OPEN) {
+                totalCount
+              }
+              stargazerCount
+              nameWithOwner
+              languages(first: 3, orderBy: {field: SIZE, direction: DESC}) {
+                totalSize
+                edges {
+                  size
+                  node {
+                    name
+                  }
+                }
+              }
+              openGraphImageUrl
+              description
+              defaultBranchRef {
+                target {
+                  ... on Commit {
+                    committedDate
+                  }
+                }
+              }
+            }
+          }
+          `,
           variables: {
             repoOwner: project.name.split("/")[0],
             repoName: project.name.split("/")[1],
@@ -151,7 +158,9 @@ export default function handler(req, res) {
         let gqlBody = {
           query: `query ($login: String!) {
             organization(login: $login) {
-              login,
+              name
+              avatarUrl
+              login
               repositories(
                 first: 100
                 isLocked: false
@@ -160,7 +169,11 @@ export default function handler(req, res) {
                 orderBy: {direction: DESC, field: STARGAZERS}
               ) {
                 nodes {
-                  name
+                  openIssues: issues(states:OPEN) {
+                    totalCount
+                  }
+                  stargazerCount
+                  nameWithOwner
                   languages(first: 3, orderBy: {field: SIZE, direction: DESC}) {
                     totalSize
                     edges {
@@ -171,8 +184,14 @@ export default function handler(req, res) {
                     }
                   }
                   openGraphImageUrl
-                  shortDescriptionHTML
-                  pushedAt
+                  description
+                  defaultBranchRef {
+                    target {
+                      ... on Commit {
+                        committedDate
+                      }
+                    }
+                  }
                 }
               }
             }
