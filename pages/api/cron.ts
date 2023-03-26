@@ -222,7 +222,11 @@ export default function handler(req, res) {
     fetchComps().then((result) =>
       saveToDB("comps", result, "641b2aaf8cf478f1b611c04e")
     );
-
-    return res.status(200).json({});
+    if (req.query.key == process.env.update_password) {
+      return res.status(200).json({});
+    } else {
+      res.status(404).end();
+      return;
+    }
   });
 }
