@@ -23,12 +23,14 @@ export default async function handler(req, res) {
     res.status(200).json(
       compsResult.data
         .map((obj) => {
-          if (obj.organization) {
-            return {
-              login: obj.organization.login,
-              name: obj.organization.name,
-              avatar: obj.organization.avatarUrl
-            };
+          if (obj) {
+            if (obj.organization) {
+              return {
+                login: obj.organization.login,
+                name: obj.organization.name,
+                avatar: obj.organization.avatarUrl,
+              };
+            }
           }
         })
         .filter((item) => item != null)

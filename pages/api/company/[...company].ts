@@ -24,8 +24,10 @@ export default async function handler(req, res) {
 
 
     res.status(200).json(compsResult.data.find(obj => {
-      if (obj.organization) {        
-        return obj.organization.login == company
+      if (obj) {
+        if (obj.organization) {        
+          return obj.organization.login == company
+        }
       }
     }));
   } finally {
