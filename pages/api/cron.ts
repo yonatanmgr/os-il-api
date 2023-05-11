@@ -6,6 +6,8 @@ export default function handler(req, res) {
   const splitProjectRegex = /\[(.+)\]\((https:\/\/github\.com\/[\w\/-]+)\) ?-? ?([^\![]+)/;
   const splitCompanyRegex = /\[(.+)\]\((.+)\)/;
   const findListItemRegex = /(?<=\* ).*/gm;
+  const isRepoRegex = /^https:\/\/github\.com\/[^\/]+\/[^\/].+\/?$/;
+  const extractRepoAndOwner = /https:\/\/github\.com\/([^\/]+\/[^\/]+)\/?.+$/;
   const projectsTitleRegex =
     /(?:^|\n)## Projects by main language\s?[^\n]*\n(.*?)(?=\n##?\s|$)/gs;
   const compsTitleRegex = /(?:^|\n)## Companies\s?[^\n]*\n(.*?)(?=\n##?\s|$)/gs;
@@ -76,13 +78,13 @@ export default function handler(req, res) {
       .map((projectStr) => {
         const res = projectStr.match(splitProjectRegex);
 
-        // Checking if result exists and if it is a GitHub url
-        if (res && res[2].split("/").includes("github.com")) {
-          // Checking if result is a repo. Else, add to companies
-          if (res[2].split("/").length > 4) {
-            const name = res[2].replace("https://github.com/", "");
+        if (res) {
+          if (isRepoRegex.test(res[2])) {
+            const [, owner, repo] = extractRepoAndOwner.exec(res[2]);
+            const repoFullName = `${owner}/${repo}`;
+
             return {
-              name: name,
+              name: repoFullName,
               description: res[3],
             };
           } else {
