@@ -3,8 +3,8 @@ import { ObjectId } from "mongodb";
 
 export default function handler(req, res) {
   const langsToListRegex = /^\s?#{3}([^#{3}]+?)\n([^]+?)(?=^\s?#{3}[^#{3}])/gm;
-  const splitProjectRegex = /\[(.+)\]\((.+)\) - (.+)/;
-  const splitCompanyRegex = /\[(.+)\]\((.+)\)/;
+  const splitProjectRegex = /\[(.+)\]\((.+)\) - (.+)/g;
+  const splitCompanyRegex = /\[(.+)\]\((.+)\)/g;
   const cleanBadgesRegex = /!\[(.+)\]\(.+\)/;
   const findListItemRegex = /(?<=\* ).*/gm;
   const projectsTitleRegex =
