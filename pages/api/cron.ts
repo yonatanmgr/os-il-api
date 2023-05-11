@@ -3,7 +3,7 @@ import { ObjectId } from "mongodb";
 
 export default function handler(req, res) {
   const langsToListRegex = /^\s?#{3}([^#{3}]+?)\n([^]+?)(?=^\s?#{3}[^#{3}])/gm;
-  const splitProjectRegex = /\[(.+)\]\((.+)\) ?-? ?(.+)/;
+  const splitProjectRegex = /\[(.+)\]\((https:\/\/github\.com\/[\w\/-]+)\) ?-? ?([^\![]+)/;
   const splitCompanyRegex = /\[(.+)\]\((.+)\)/;
   const cleanBadgesRegex = /!\[(.+)\]\(.+\)/;
   const findListItemRegex = /(?<=\* ).*/gm;
