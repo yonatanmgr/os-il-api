@@ -5,7 +5,6 @@ export default function handler(req, res) {
   const langsToListRegex = /^\s?#{3}([^#{3}]+?)\n([^]+?)(?=^\s?#{3}[^#{3}])/gm;
   const splitProjectRegex = /\[(.+)\]\((https:\/\/github\.com\/[\w\/-]+)\) ?-? ?([^\![]+)/;
   const splitCompanyRegex = /\[(.+)\]\((.+)\)/;
-  const cleanBadgesRegex = /!\[(.+)\]\(.+\)/;
   const findListItemRegex = /(?<=\* ).*/gm;
   const projectsTitleRegex =
     /(?:^|\n)## Projects by main language\s?[^\n]*\n(.*?)(?=\n##?\s|$)/gs;
@@ -84,7 +83,7 @@ export default function handler(req, res) {
             const name = res[2].replace("https://github.com/", "");
             return {
               name: name,
-              description: res[3].replace(cleanBadgesRegex, ""),
+              description: res[3],
             };
           } else {
             allComps.push({ name: res[2].split("/")[3] });
