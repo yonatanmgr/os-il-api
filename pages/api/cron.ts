@@ -7,7 +7,6 @@ export default function handler(req, res) {
   const splitCompanyRegex = /\[(.+)\]\((.+)\)/;
   const findListItemRegex = /(?<=\* ).*/gm;
   const isRepoRegex = /^https:\/\/github\.com\/[^\/]+\/[^\/].+\/?$/;
-  const extractRepoAndOwner = /https:\/\/github\.com\/([^\/]+\/[^\/]+)\/?.+$/;
   const projectsTitleRegex =
     /(?:^|\n)## Projects by main language\s?[^\n]*\n(.*?)(?=\n##?\s|$)/gs;
   const compsTitleRegex = /(?:^|\n)## Companies\s?[^\n]*\n(.*?)(?=\n##?\s|$)/gs;
@@ -80,10 +79,11 @@ export default function handler(req, res) {
 
         if (res) {
           if (isRepoRegex.test(res[2])) {
-            const [, repoFullName] = extractRepoAndOwner.exec(res[2]);
-
+            const owner = res[2].split("/")[3];
+            const name = res[2].split("/")[4];
+            
             return {
-              name: repoFullName,
+              name: `${owner}/${name}`,
               description: res[3],
             };
           } else {
