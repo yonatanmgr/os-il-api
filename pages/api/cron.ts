@@ -80,8 +80,7 @@ export default function handler(req, res) {
 
         if (res) {
           if (isRepoRegex.test(res[2])) {
-            const [, owner, repo] = extractRepoAndOwner.exec(res[2]);
-            const repoFullName = `${owner}/${repo}`;
+            const [, repoFullName] = extractRepoAndOwner.exec(res[2]);
 
             return {
               name: repoFullName,
